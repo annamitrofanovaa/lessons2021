@@ -1,43 +1,58 @@
-//матрица зигзагом
 #include <iostream>
+#include <iomanip>
+
+using namespace std;
 
 int main()
 {
     int n, m;
-    std::cin >> n >> m;
-    int **arr = new int *[n];
+    cin >> n >> m;
+    int **matrix = new int *[n];
+    for (int i = 0; i < n; i++)
+    {
+        matrix[i] = new int[m];
+    }
 
-    for (int i = 0; i < n; i++)
+    int j, k = 0, number = 1;
+
+    while (number <= n * m)
     {
-        arr[i] = new int[m];
-    }
-    int a = 1;
-    for (int i = 0; i < n; i++)
-    {
-        if (i % 2 == 0)
+        k++;
+        for (j = k - 1; j < m - k + 1; j++)
         {
-            for (int j = 0; j < m; j++)
-            {
-                arr[i][j] = a++;
-            }
+            matrix[k - 1][j] = number++;
         }
-        else
+
+        for (j = k; j < n - k + 1; j++)
         {
-            for (int j = m - 1; j >= 0; j--)
-            {
-                arr[i][j] = a++;
-            }
+            matrix[j][m - k] = number++;
+        }
+
+        for (j = m - k - 1; j >= k - 1; j--)
+        {
+            matrix[n - k][j] = number++;
+        }
+
+        for (j = n - k - 1; j >= k; j--)
+        {
+            matrix[j][k - 1] = number++;
         }
     }
-    
+
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < m; j++)
         {
-            std::cout << arr[i][j] << " ";
+            cout << setw(4) << matrix[i][j];
         }
-        std::cout << std::endl;
+        cout << endl;
     }
-    delete[] arr;
+
+    for (int i = 0; i < n; ++i)
+    {
+        delete[] matrix[i];
+    }
+    delete[] matrix;
+
     return 0;
 }
