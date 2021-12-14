@@ -12,6 +12,13 @@ int get_offset(int width)
     return offset;
 }
 
+BYTE normalize(double x)
+{
+    x = x > 255 ? 255 : x;
+    x = x < 0 ? 0 : x;
+    return (BYTE)x;
+}
+
 rgbimg read_rgb_bitmap(const char filename[])
 {
     std::ifstream inBMP("pic1.bmp", std::ios_base::binary);
@@ -99,6 +106,62 @@ void img_rot90(rgbimg &img)
             tmp.pixels[img.width - col][row] = img.pixels[row][col];
     delete_img(img);
     img = tmp;
+}
+
+void img_adjust(rgbimg &img, double c, double k)
+{
+    for (size_t row = 0; row < img.height; row++)
+    {
+        for (size_t col = 0; col < img.width; col++)
+        {
+            img.pixels[row][col].blue = BYTE(c * img.pixels[row][col].blue + k);
+            img.pixels[row][col].red = BYTE(c * img.pixels[row][col].red + k);
+            img.pixels[row][col].green = BYTE(c * img.pixels[row][col].green + k);
+        }
+    }
+}
+void autolevels(rgbimg &img)
+{
+    RGB min = {255, 255, 255}, max = {0, 0, 0};
+    for (size_t row = 0; row < img.height; ++row)
+    {
+        for (size_t col = 0; col < img.width; ++col)
+        {
+            RGB tmp = img.pixels[row][col];
+            if (tmp.blue > max.blue)
+                max.blue = tmp.blue;
+            if (tmp.red > max.red)
+                max.red = tmp.red;
+            if (tmp.green > max.green)
+                max.green = tmp.green;
+
+            if (tmp.blue < min.blue)
+                min.blue = tmp.blue;
+            if (tmp.red < min.red)
+                min.red = tmp.red;
+            if (tmp.green < min.green)
+                min.green = tmp.green;
+            max.blue = (max.blue == min.blue) ? min.blue + 1 : max.blue;
+            max.red = (max.red == min.red) ? min.red + 1 : max.red;
+            max.green = (max.green == min.green) ? min.green + 1 : max.green;
+
+            for (size_t row = 0; row < img.height; ++row)
+            {
+                for (size_t col = 0; col < img.width; ++col)
+                {
+                    RGB tmp = img.pixels[row][col];
+                    img.pixels[row][col].blue = normalize((tmp.blue - min.blue) * 255 / (max.blue - min.blue));
+                    img.pixels[row][col].red = normalize((tmp.red - min.red) * 255 / (max.red - min.red));
+                    img.pixels[row][col].green = normalize((tmp.green - min.green) * 255 / (max.green - min.green));
+                }
+            }
+        }
+    }
+}
+void median(rgbimg &img, int radius){
+    rgbimg source = copy_img(img);
+    unsigned char* buffer = new unsigned char [(2*radius+1)*(2*radius)+1];
+    //for(size_t row = )
 }
 
 void delete_img(rgbimg &img)

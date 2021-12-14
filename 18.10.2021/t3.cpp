@@ -11,49 +11,91 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
-
 int main()
 {
-	string roma = "IXCMVLD";
-	string result = "";
+	std::string roma = "IXCMVLD";
+	std::string result = "";
 	int number;
-	cin >> number;
+	std::cin >> number;
+
 	while (number >= 1000)
 	{
 		result += roma[3];
-		number = number - 1000;
-
+		number -= 1000;
 	}
-	while (number >= 500)
+
+	if (number >= 900)
+	{
+		result += roma[2];
+		result += roma[3];
+		number -= 900;
+	}
+	if (number >= 500)
 	{
 		result += roma[6];
-		number = number - 500;
+		number -= 500;
 	}
 	while (number >= 100)
 	{
-		if(number == 400){
+		if (number == 400)
+		{
 			result = result + roma[2] + roma[6];
-			number = number - 400;
+			number -= 400;
 			break;
 		}
-		result += roma[6];
-		number = number - 100;
+		result += roma[2];
+		number -= 100;
+	}
+
+	if (number >= 90)
+	{
+		result += roma[1];
+		result += roma[2];
+		number -= 90;
 	}
 	while (number >= 10)
 	{
-		if(number >= 50){
+		if (number >= 50)
+		{
 			result = result + roma[5];
-			number = number - 50;
+			number -= 50;
 		}
-		if(number == 40){
+		if (number == 40)
+		{
 			result = result + roma[1] + roma[5];
-			number = number - 40;
+			number -= 40;
 			break;
 		}
-		result += roma[6];
-		number = number - 10;
+		if (number < 10)
+			break;
+
+		result += roma[1];
+		number -= 10;
 	}
-	cout<<result;
+	if (number == 9)
+	{
+		result += roma[0];
+		result += roma[1];
+		number -= 9;
+	}
+	while (number > 0)
+	{
+		if (number >= 5)
+		{
+			result = result + roma[4];
+			number -= 5;
+		}
+		if (number == 4)
+		{
+			result += roma[0];
+			result += roma[4];
+			number -= 4;
+		}
+		if (number == 0)
+			break;
+		result += roma[0];
+		number -= 1;
+	}
+	std::cout << result;
 	return 0;
 }
