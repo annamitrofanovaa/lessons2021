@@ -80,7 +80,7 @@ T **transpose(T **M, int rows, int columns)
 }
 
 template <typename T>
-T **multi(T lambda, T **M, int rows, int columns)
+T **mult(T lambda, T **M, int rows, int columns)
 {
 	double **R = createMatrix<T>(rows, columns);
 	for (int i = 0; i < rows; ++i)
@@ -148,79 +148,12 @@ T **inputMatrix(int &rows, int &columns)
 }
 
 template <typename T>
-double det(double **M, int N)
+T det(T **M, int rows, int columns)
 {
-	double determinant;
-	int sub_j, minor_sign;
-	double **subM;
-	switch (N)
-	{
-	case 1:
-		return M[0][0];
-	case 2:
-		return M[0][0] * M[1][1] - M[0][1] * M[1][0];
-	default:
-		if (N < 1)
-			return 0; // error
-		subM = new double *[N - 1];
-		determinant = 0;
-		minor_sign = 1;
-		for (int i = 0; i < N; i++) // Разложение по первому столбцу
-		{
-			sub_j = 0;
-			for (int j = 0; j < N; j++)
-				if (i != j)					  // исключить i строку
-					subM[sub_j++] = M[j] + 1; // здесь + 1 исключает первый столбец
-
-			determinant = determinant + minor_sign * M[i][0] * det(subM, N - 1);
-			minor_sign = -minor_sign;
-		};
-		delete[] subM;
-		return determinant;
-	};
-};
-
-T **inv(double **matr, int n)
-{
-	double **obr_matr = new double *[n];
-	if (det(matr, n))
-	{
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < n; j++)
-			{
-				int m = n - 1;
-				int **temp_matr = new int *[m];
-				for (int k = 0; k < m; k++)
-					temp_matr[k] = new int[m];
-				Get_matr(matr, n, temp_matr, i, j);
-				obr_matr[i][j] = pow(-1.0, i + j + 2) * det(temp_matr, m) / det;
-			}
-		}
-	}
-	else
-		std::cout << "матрица вырожденная" << std::endl;
-	return obr_matr;
-
+	/*Вычисление определителя матрицы*/
 }
-void Get_matr(double **matr, int n, int **temp_matr, int indRow, int indCol)
-{
 
-	int ki = 0;
-	for (int i = 0; i < n; i++)
-	{
-		if (i != indRow)
-		{
-			for (int j = 0, kj = 0; j < n; j++)
-			{
-				if (j != indCol)
-				{
-					temp_matr[ki][kj] = matr[i][j];
-					kj++;
-				}
-			}
-			ki++;
-		}
-	}
-}
+double inv(double **A, int n); // Обратная к квадратной матрице A (n x n).
+// Если обратная не существует, должно генерироваться исключение
+
 double **linspace(double first, double last, int n);

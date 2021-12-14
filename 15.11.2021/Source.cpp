@@ -1,25 +1,22 @@
 #include <iostream>
 #include "matrix.h"
 
-int main()
-{
-	double **Z, **O, **E, **v;
-	try
-	{
+int main() {
+	double ** Z, **O, **E, **v;
+	try {
 		v = linspace(1, 8, 8);
 		double **t = ones<double>(8, 1);
 		Z = mult(t, v, 8, 1, 8);
 		O = transpose(Z, 8, 8);
 		E = mult(Z, O, 8, 8, 8);
 		print(E, 8, 8, "result:\n");
-		double detE = det(E,8);
+
 		deleteMatrix(v, 1);
 		deleteMatrix(t, 8);
 		deleteMatrix(Z, 8);
 		deleteMatrix(O, 8);
 		deleteMatrix(E, 8);
-		/*
-		Z = zeros(4, 5);
+		/*Z = zeros(4, 5);
 		O = ones(4, 5);
 		E = eye(4);
 		v = linspace(1, 10, 10);
@@ -42,17 +39,14 @@ int main()
 		deleteMatrix(E, 4);
 		deleteMatrix(v, 1);*/
 	}
-	catch (const char *error)
-	{
+	catch (const char *error) {
 		std::cout << "Error: " << error << std::endl;
 	}
-	catch (...)
-	{
+	catch (...) {
 		std::cout << "Unknown error." << std::endl;
 	}
 
-	/*try
-	{
+	try {
 		int **A, **B;
 		int rowsA, columnsA, rowsB, columnsB;
 		A = inputMatrix<int>(rowsA, columnsA);
@@ -66,14 +60,12 @@ int main()
 		deleteMatrix(B, rowsB);
 		deleteMatrix(C, rowsA);
 	}
-	catch (const char *error)
-	{
+	catch (const char *error) {
 		std::cout << "Error: " << error << std::endl;
 	}
-	catch (...)
-	{
+	catch (...) {
 		std::cout << "Unknown error." << std::endl;
-	}*/
+	}
 
 	system("pause");
 	return 0;
