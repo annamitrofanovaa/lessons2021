@@ -3,12 +3,21 @@
 
 using namespace std;
 
-void shiftarray(vector<int> &arr, int shift, int n)
+int gcd(int a, int b)
 {
-    for (int i = 0; i < n; i++)
+    if (a % b == 0)
     {
-        arr[i] = arr[i + shift];
+        return b;
     }
+    if (b % a == 0)
+    {
+        return a;
+    }
+    if (a > b)
+    {
+        return gcd(a % b, b);
+    }
+    return gcd(a, b % a);
 }
 
 int main()
@@ -18,25 +27,37 @@ int main()
     cin >> shift;
     cout << "size:";
     cin >> n;
+
     if (shift < 0)
     {
         shift = n + shift;
+        shift = (-1 * shift) % n;
     }
-    vector<int> arr;
-    arr.resize(n + shift);
+    shift %= n;
 
+    vector<int> arr;
+    arr.resize(n);
     for (int i = 0; i < n; i++)
     {
         arr[i] = i + 1;
     }
-    for (int i = n; i < n + shift; i++)
+    int temp, j, k;
+    for (int i = 0; i < gcd(n, shift); i++)
     {
-        arr[i] = arr[i - n];
+        temp = arr[i];
+        j = i;
+        while (1)
+        {
+            k = j + shift;
+            if (k >= n)
+                k -= n;
+            if (k == i)
+                break;
+            arr[j] = arr[k];
+            j = k;
+        }
+        arr[j] = temp;
     }
-
-    shiftarray(arr, shift, n);
-    //&arr[0] = &arr[shift];
-    arr.resize(n);
     for (int i = 0; i < n; i++)
     {
         cout << arr[i] << " ";
