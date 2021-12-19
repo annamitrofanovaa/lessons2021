@@ -18,21 +18,24 @@ int main()
     while (number <= n * m)
     {
         k++;
-        for (j = k - 1; j < m - k + 1; j++)
+        for (j = k - 1; j <= m - k; j++)
         {
             matrix[k - 1][j] = number++;
         }
-
+        if (number - 1 >= n * m)
+            break;
         for (j = k; j < n - k + 1; j++)
         {
             matrix[j][m - k] = number++;
         }
-
+        if (number - 1 >= n * m)
+            break;
         for (j = m - k - 1; j >= k - 1; j--)
         {
             matrix[n - k][j] = number++;
         }
-
+        if (number - 1 >= n * m)
+            break;
         for (j = n - k - 1; j >= k; j--)
         {
             matrix[j][k - 1] = number++;
