@@ -1,10 +1,60 @@
 #include <iostream>
 #include "matrix.h"
 
-int main() {
-	double ** Z, **O, **E, **v;
+int main()
+{
+	int size;
+	do
+	{
+		std::cout << "Input size of square matrix: ";
+		std::cin >> size;
+	} while (size < 1);
+
+	double **A = inputMatrix<double>(size, size);
+
+	print(A, size, size, "A = \n");
+
+	std::cout << "Determinant = " << findDet(A, size) << std::endl;
+
+	
+
+	try
+	{
+		inv(A, size);
+		print(A, size, size, "Inverse matrix = \n");
+		//deleteMatrix(, size);
+	}
+	catch (const char c[])
+	{
+		std::cout << "Error: " << c << std::endl;
+	}
+	catch (...)
+	{
+		std::cout << "Unknown error" << std::endl;
+	}
+
+	deleteMatrix(A, size);
+
+	/*try
+	{
+		double **B = inverseMatrix(A, n);
+		printMatrix(B, n, n, "Inverse matrix = \n");
+		deleteMatrix(B, n);
+	}
+	catch (const char c[])
+	{
+		std::cout << "Error: " << c << std::endl;
+	}
+	catch (...)
+	{
+		std::cout << "Unknown error" << std::endl;
+	}
+
+	deleteMatrix(A, n);
+
+	/*double ** Z, **O, **E, **v;
 	try {
-		v = linspace(1, 8, 8);
+		/*v = linspace(1, 8, 8);
 		double **t = ones<double>(8, 1);
 		Z = mult(t, v, 8, 1, 8);
 		O = transpose(Z, 8, 8);
@@ -37,7 +87,7 @@ int main() {
 		deleteMatrix(Z, 4);
 		deleteMatrix(O, 4);
 		deleteMatrix(E, 4);
-		deleteMatrix(v, 1);*/
+		deleteMatrix(v, 1);
 	}
 	catch (const char *error) {
 		std::cout << "Error: " << error << std::endl;
@@ -65,7 +115,7 @@ int main() {
 	}
 	catch (...) {
 		std::cout << "Unknown error." << std::endl;
-	}
+	}*/
 
 	system("pause");
 	return 0;
