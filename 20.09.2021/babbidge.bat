@@ -14,6 +14,3 @@ goto :loop
 :exit
 echo %numb%
 pause
-
-
-@echo off
