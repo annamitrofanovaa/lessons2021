@@ -7,14 +7,21 @@ void shiftarray(vector<int> &arr, int shift, int n)
 {
     for (int i = 0; i < n; i++)
     {
-        arr[i] = arr[i+shift];
+        arr[i] = arr[i + shift];
     }
 }
 
 int main()
 {
     int shift, n;
-    cin >> shift >> n;
+    cout << "shift:";
+    cin >> shift;
+    cout << "size:";
+    cin >> n;
+    if (shift < 0)
+    {
+        shift = n + shift;
+    }
     vector<int> arr;
     arr.resize(n + shift);
 
@@ -26,7 +33,7 @@ int main()
     {
         arr[i] = arr[i - n];
     }
-    
+
     shiftarray(arr, shift, n);
     //&arr[0] = &arr[shift];
     arr.resize(n);
