@@ -190,72 +190,59 @@ double findDet(double **a, int size)
 	}
 }
 
-void **inv(double **A, int size)
+double **matrixMinor(double **matrix, int n, int a, int b)
+{
+	double **A = createMatrix<double>(n - 1, n - 1);
+	for (int i = 0; i < a; ++i)
+	{
+		for (int j = 0; j < b; ++j)
+		{
+			A[i][j] = matrix[i][j];
+		}
+		for (int j = b + 1; j < n; ++j)
+		{
+			A[i][j - 1] = matrix[i][j];
+		}
+	}
+	for (int i = a + 1; i < n; ++i)
+	{
+		for (int j = 0; j < b; ++j)
+		{
+			A[i - 1][j] = matrix[i][j];
+		}
+		for (int j = b + 1; j < n; ++j)
+		{
+			A[i - 1][j - 1] = matrix[i][j];
+		}
+	}
+	return A;
+}
+
+double** inv(double **A, int size)
 {
 	double det = findDet(A, size);
 	if (det == 0)
 	{
 		throw "Determinant of input matrix is equal to 0";
 	}
-
-	double temp;
-	double **E = new double *[size];
-	for (int i = 0; i < size; i++)
+	double **result = createMatrix<double>(size, size);
+	for (int i = 0; i < size; ++i)
 	{
-		E[i] = new double[size];
-	}
-	for (int i = 0; i < size; i++)
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < size; ++j)
 		{
-			E[i][j] = 0;
-			if (i == j)
+			double **T = matrixMinor(A, size, j, i);
+			result[i][j] = double(findDet(T, size - 1)) / det;
+			if ((i + j) % 2)
+				result[i][j] *= -1;
+
+			if (result[i][j] == 0)
 			{
-				E[i][j] = 1;
+				result[i][j] = 0;
 			}
-		}
-
-	for (int k = 0; k < size; k++)
-	{
-		temp = A[k][k];
-		for (int j = 0; j < size; j++)
-		{
-			A[k][j] /= temp;
-			E[k][j] /= temp;
-		}
-
-		for (int i = k + 1; i < size; i++)
-		{
-			temp = A[i][k];
-			for (int j = 0; j < size; j++)
-			{
-				A[i][j] -= A[k][j] * temp;
-				E[i][j] -= E[k][j] * temp;
-			}
+			deleteMatrix(T, size - 1);
 		}
 	}
-
-	for (int k = size - 1; k > 0; k--)
-	{
-		for (int i = k - 1; i >= 0; i--)
-		{
-			temp = A[i][k];
-			for (int j = 0; j < size; j++)
-			{
-				A[i][j] -= A[k][j] * temp;
-				E[i][j] -= E[k][j] * temp;
-			}
-		}
-	}
-
-	for (int i = 0; i < size; i++)
-	{
-		for (int j = 0; j < size; j++)
-		{
-			A[i][j] = E[i][j];
-		}
-	}
-
-	deleteMatrix(E, size);
+	return result;
 }
 
 double **linspace(double first, double last, int n);

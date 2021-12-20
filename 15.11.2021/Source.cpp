@@ -16,13 +16,11 @@ int main()
 
 	std::cout << "Determinant = " << findDet(A, size) << std::endl;
 
-	
-
 	try
 	{
-		inv(A, size);
-		print(A, size, size, "Inverse matrix = \n");
-		//deleteMatrix(, size);
+		double** B = inv(A, size);
+		print(B, size, size, "Inverse matrix = \n");
+		deleteMatrix(B, size);
 	}
 	catch (const char c[])
 	{
