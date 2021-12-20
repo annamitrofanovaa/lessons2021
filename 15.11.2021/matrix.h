@@ -218,7 +218,7 @@ double **matrixMinor(double **matrix, int n, int a, int b)
 	return A;
 }
 
-double** inv(double **A, int size)
+double **inv(double **A, int size)
 {
 	double det = findDet(A, size);
 	if (det == 0)
@@ -234,11 +234,6 @@ double** inv(double **A, int size)
 			result[i][j] = double(findDet(T, size - 1)) / det;
 			if ((i + j) % 2)
 				result[i][j] *= -1;
-
-			if (result[i][j] == 0)
-			{
-				result[i][j] = 0;
-			}
 			deleteMatrix(T, size - 1);
 		}
 	}
